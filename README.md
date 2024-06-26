@@ -1,5 +1,5 @@
 # Descrição:
-    Este é um projeto para mostrar as utilidades e diferenças entre o **Class Component** e o **Functional Component** do React.
+Este é um projeto para mostrar as utilidades e diferenças entre o **Class Component** e o **Functional Component** do React.
 
 ## Instruções para execução
 ### Clone o projeto:
