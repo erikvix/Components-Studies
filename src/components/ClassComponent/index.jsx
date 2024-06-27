@@ -26,9 +26,7 @@ class ClassComponent extends Component {
 
   handleFetch() {
     this.setState({ loading: true });
-    fetch(apiUrl, {
-      method: "GET",
-    })
+    fetch(apiUrl)
       .then((res) => res.json())
       .then((res) => {
         this.setState({
