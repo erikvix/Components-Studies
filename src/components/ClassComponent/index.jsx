@@ -1,11 +1,10 @@
 import React, { Component } from "react";
-import axios from "axios";
-
+import "./index.css";
+const apiUrl = "https://official-joke-api.appspot.com/jokes/random";
 class ClassComponent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiUrl: "https://official-joke-api.appspot.com/random_joke",
       setup: "",
       punchline: "",
       loading: false,
@@ -27,17 +26,20 @@ class ClassComponent extends Component {
 
   handleFetch() {
     this.setState({ loading: true });
-    axios
-      .get("https://official-joke-api.appspot.com/jokes/random", {
-        method: "GET",
-      })
+    fetch(apiUrl, {
+      method: "GET",
+    })
+      .then((res) => res.json())
       .then((res) => {
-        this.setState({ loading: false });
         this.setState({
-          setup: res.data.setup,
-          punchline: res.data.punchline,
+          setup: res.setup,
+          punchline: res.punchline,
         });
       })
+      .finally(() => {
+        this.setState({ loading: false });
+      })
+
       .catch((error) => {
         this.setState({
           loading: false,
@@ -49,10 +51,10 @@ class ClassComponent extends Component {
   render() {
     return (
       <div>
-        <h1 style={{ color: "#FF7D00" }}>Every Day Joke</h1>
+        <h1 className="titulo">Every Day Joke</h1>
         <div>
-          <p style={{ fontSize: "1rem" }}>{this.state.setup}</p>
-          <p style={{ fontSize: "1.2rem" }}>{this.state.punchline}</p>
+          <p className="setup">{this.state.setup}</p>
+          <p className="punchline">{this.state.punchline}</p>
           {this.state.loading ? (
             <button>
               <svg
