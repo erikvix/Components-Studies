@@ -34,15 +34,11 @@ class ClassComponent extends Component {
           punchline: res.punchline,
         });
       })
+      .catch((error) => {
+        console.log(error);
+      })
       .finally(() => {
         this.setState({ loading: false });
-      })
-
-      .catch((error) => {
-        this.setState({
-          loading: false,
-        });
-        console.log(error);
       });
   }
 
