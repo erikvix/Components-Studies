@@ -1,37 +1,33 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./index.css";
-const apiUrl = "https://official-joke-api.appspot.com/jokes/random";
+import { fetchJoke } from "../../services/api";
 
 export default function FunctionalComponent() {
   const [punchline, setPunchline] = useState();
   const [setup, setSetup] = useState();
   const [loading, setLoading] = useState(false);
 
-  const handleGetJoke = () => {
+  const handleGetJoke = async () => {
     setLoading(true);
-    fetch(apiUrl)
-      .then((res) => res.json())
-      .then((data) => {
-        setPunchline(data.punchline);
-        setSetup(data.setup);
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    try {
+      const data = await fetchJoke();
+      console.log(data);
+      setPunchline(data.punchline);
+      setSetup(data.setup);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setTimeout(() => {
+        setSetup("");
+        setPunchline("");
+      }, 4000);
+    }
   };
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading("");
-      setSetup("");
-    }, 5000);
-  }, [handleGetJoke]);
 
   return (
     <div>
-      <h1 className="titulo2">Every Day Joke</h1>
+      <h2 className="titulo2">Functional Component</h2>
       {punchline && setup && (
         <div>
           <p className="setup">{setup}</p>

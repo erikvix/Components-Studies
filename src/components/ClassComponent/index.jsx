@@ -45,7 +45,7 @@ class ClassComponent extends Component {
   render() {
     return (
       <div>
-        <h1 className="titulo">Every Day Joke</h1>
+        <h2 className="titulo">Class Component</h2>
         <div>
           <p className="setup">{this.state.setup}</p>
           <p className="punchline">{this.state.punchline}</p>
