@@ -15,7 +15,7 @@ function App() {
         </div>
       )}
       <button onClick={() => setShowComponent(!showComponent)}>
-        Show Components
+        {showComponent ? "Hide Components" : "Show Components"}
       </button>
     </div>
   );
