@@ -34,22 +34,18 @@ class ClassComponent extends Component {
           punchline: res.punchline,
         });
       })
+      .catch((error) => {
+        console.log(error);
+      })
       .finally(() => {
         this.setState({ loading: false });
-      })
-
-      .catch((error) => {
-        this.setState({
-          loading: false,
-        });
-        console.log(error);
       });
   }
 
   render() {
     return (
       <div>
-        <h1 className="titulo">Every Day Joke</h1>
+        <h2 className="titulo">Class Component</h2>
         <div>
           <p className="setup">{this.state.setup}</p>
           <p className="punchline">{this.state.punchline}</p>
