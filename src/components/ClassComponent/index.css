@@ -8,3 +8,21 @@
 .setup {
     font-size: 1rem;
 }
+.container{
+    display: flex;
+    flex-direction: column;
+}
+.history{
+    overflow-y: auto;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #334155;
+    border-radius: 0.8rem;
+}
+
+.historyBox{
+    border: 1px solid #334155;
+    padding: 1rem;
+    /* margin-top: 1rem; */
+}

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./index.css";
-const apiUrl = "https://official-joke-api.appspot.com/jokes/random";
+import { fetchJoke } from "../../services/api";
 class ClassComponent extends Component {
   constructor(props) {
     super(props);
@@ -8,8 +8,9 @@ class ClassComponent extends Component {
       setup: "",
       punchline: "",
       loading: false,
+      error: null,
+      history: [],
     };
-    this.handleFetch = this.handleFetch.bind(this);
   }
 
   componentDidMount() {
@@ -24,37 +25,39 @@ class ClassComponent extends Component {
     console.log("component unmounted");
   }
 
-  handleFetch() {
+  handleGetJoke = async () => {
     this.setState({ loading: true });
-    fetch(apiUrl)
-      .then((res) => res.json())
-      .then((res) => {
+    try {
+      const data = await fetchJoke();
+      this.setState((prevState) => ({
+        setup: data.setup,
+        punchline: data.punchline,
+        history: [...prevState.history, data],
+      }));
+    } catch (error) {
+      console.log(error.message);
+      this.setState({ error: error.message });
+    } finally {
+      this.setState({ loading: false });
+      setTimeout(() => {
         this.setState({
-          setup: res.setup,
-          punchline: res.punchline,
+          setup: "",
+          punchline: "",
         });
-      })
-      .finally(() => {
-        this.setState({ loading: false });
-      })
-
-      .catch((error) => {
-        this.setState({
-          loading: false,
-        });
-        console.log(error);
-      });
-  }
+      }, 4000);
+    }
+  };
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h1 className="titulo">Every Day Joke</h1>
         <div>
+          {this.state.error && <p className="error">{this.state.error}</p>}
           <p className="setup">{this.state.setup}</p>
           <p className="punchline">{this.state.punchline}</p>
-          {this.state.loading ? (
-            <button>
+          <button onClick={this.handleGetJoke} disabled={this.state.loading}>
+            {this.state.loading ? (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="1em"
@@ -74,11 +77,28 @@ class ClassComponent extends Component {
                   ></animateTransform>
                 </path>
               </svg>
-            </button>
-          ) : (
-            <button onClick={this.handleFetch}>Get your joke</button>
-          )}
+            ) : (
+              "Get your joke"
+            )}
+          </button>
         </div>
+        {this.state.history.length > 0 && (
+          <div className="history">
+            <h3>Previous jokes</h3>
+            <div>
+              {this.state.history.map((joke, index) => (
+                <div className="historyBox" key={index}>
+                  <p className="setup">
+                    Setup: <span>{joke.setup}</span>
+                  </p>
+                  <p className="punchline">
+                    PunchLine: <span>{joke.punchline}</span>
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
